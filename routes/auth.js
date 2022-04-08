@@ -49,7 +49,9 @@ router.get(
       { id: req.user.social_id },
       process.env.APP_SECRET
     );
-    res.redirect("exp://192.168.1.2:19000?token=" + token + "&provider=google");
+    res.redirect(
+      "exp://192.168.1.2:19000?token=" + token + "&provider=facebook"
+    );
   }
 );
 router.get(
