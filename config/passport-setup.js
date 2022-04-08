@@ -23,6 +23,7 @@ passport.use(
     async function (accessToken, refreshToken, profile, cb) {
       // create a new user
       // but first find a user with google id
+      console.log("Google User", profile);
 
       const user = await User.findOne({ google_id: profile.id });
       if (user) {
