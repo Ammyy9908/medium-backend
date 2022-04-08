@@ -26,6 +26,7 @@ app.use(passport.session());
 
 app.get("/logout", (req, res) => {
   req.logout();
+  req.session = null;
   res.redirect("exp://192.168.1.2:19000?logout=success");
 });
 
