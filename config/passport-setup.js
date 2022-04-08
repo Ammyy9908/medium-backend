@@ -22,6 +22,7 @@ passport.use(
         "https://medium-backend-native.herokuapp.com/auth/google/callback",
     },
     async function (accessToken, refreshToken, profile, cb) {
+      console.log("Google Profile", profile);
       // create a new user
       // but first find a user with google id
 
@@ -51,6 +52,7 @@ passport.use(
         "https://medium-backend-native.herokuapp.com/auth/twitter/callback",
     },
     async function (token, tokenSecret, profile, cb) {
+      console.log("Twitter Profile", profile);
       const user = await User.findOne({ social_id: profile.id });
       if (user) {
         return cb(null, user);
@@ -77,7 +79,7 @@ passport.use(
         "https://medium-backend-native.herokuapp.com/auth/github/callback",
     },
     async function (accessToken, refreshToken, profile, cb) {
-      console.log(profile);
+      console.log("Github Profile", profile);
       const user = await User.findOne({ social_id: profile.id });
       if (user) {
         console.log("UserFound", user);
