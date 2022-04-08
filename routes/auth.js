@@ -4,6 +4,7 @@ const verifyUser = require("../utils/verifyUser");
 const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+
 dotenv.config();
 router.get("/login", (req, res) => {
   res.render("login");
@@ -16,7 +17,7 @@ router.get("/logout", (req, res) => {
 router.get("/google/user", verifyUser, async (req, res) => {
   const { id } = req.user;
 
-  const user = await User.findOne({ google_id: id });
+  const user = await User.findOne({ social_id: id });
   if (user) {
     res.status(200).send(user);
   }
@@ -25,7 +26,7 @@ router.get("/google/user", verifyUser, async (req, res) => {
 router.get("/facebook/user", verifyUser, async (req, res) => {
   const { id } = req.user;
 
-  const user = await User.findOne({ google_id: id });
+  const user = await User.findOne({ social_id: id });
   if (user) {
     res.status(200).send(user);
   }
@@ -38,12 +39,14 @@ router.get(
   })
 );
 
+router.get("/facebook", passport.authenticate("facebook"));
+
 router.get(
   "/facebook/callback",
-  passport.authenticate("google"),
+  passport.authenticate("facebook"),
   async (req, res) => {
     const token = await jwt.sign(
-      { id: req.user.google_id },
+      { id: req.user.social_id },
       process.env.APP_SECRET
     );
     res.redirect("exp://192.168.1.2:19000?token=" + token + "&provider=google");

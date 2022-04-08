@@ -21,7 +21,6 @@ passport.use(
         "https://medium-backend-native.herokuapp.com/auth/google/callback",
     },
     async function (accessToken, refreshToken, profile, cb) {
-      console.log(profile);
       // create a new user
       // but first find a user with google id
 
@@ -32,6 +31,30 @@ passport.use(
       } else {
         const new_user = await new User({
           google_id: profile.id,
+          username: profile.displayName,
+        }).save();
+        return cb(null, new_user);
+      }
+    }
+  )
+);
+
+passport.use(
+  new FacebookStrategy(
+    {
+      clientID: "1143568439796260",
+      clientSecret: "a689c11edd9838d3fe231cc8b57680f7",
+      callbackURL:
+        "https://medium-backend-native.herokuapp.com/auth/facebook/callback/",
+    },
+    async function (accessToken, refreshToken, profile, cb) {
+      const user = await User.findOne({ social_id: profile.id });
+      if (user) {
+        console.log(user);
+        return cb(null, user);
+      } else {
+        const new_user = await new User({
+          social_id: profile.id,
           username: profile.displayName,
         }).save();
         return cb(null, new_user);

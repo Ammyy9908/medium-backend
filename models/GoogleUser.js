@@ -5,11 +5,11 @@ const user_schema = new Schema({
     type: String,
     required: true,
   },
-  social_id: {
+  google_id: {
     type: String,
     required: true,
   },
 });
 
-const User = model("user", user_schema);
+const GoogleUser = model("google_ser", user_schema);
 module.exports = User;
