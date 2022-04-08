@@ -45,8 +45,8 @@ router.get(
 router.get("/facebook", passport.authenticate("facebook"));
 
 router.get("/logout", (req, res) => {
-  req.logout();
-  res.redirect("exp://192.168.1.2:19000");
+  req.logout().redirect("/");
+  // res.redirect("exp://192.168.1.2:19000");
 });
 
 router.get(
