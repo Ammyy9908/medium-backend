@@ -47,7 +47,9 @@ router.get("/logout", (req, res, next) => {
 
 router.get(
   "/facebook/callback",
-  passport.authenticate("facebook"),
+  passport.authenticate("facebook", {
+    failureRedirect: "/auth/login",
+  }),
   async (req, res) => {
     console.log("Facebook user", req.user);
     const token = await jwt.sign(
