@@ -49,7 +49,8 @@ passport.use(
     {
       consumerKey: "uw5PdJQFIuxA2lOFo1IBwevYi",
       consumerSecret: "mQst2qxX3E1cLY2ZlMLBXyhU95Q7hw3PbH6HM3DvefcrPd2xar",
-      callbackURL: "https://4e6d-103-92-103-132.ngrok.io/auth/twitter/callback",
+      callbackURL:
+        "https://medium-backend-native.herokuapp.com/auth/twitter/callback",
     },
     async function (token, tokenSecret, profile, cb) {
       console.log("Twitter User", profile);
