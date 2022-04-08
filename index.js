@@ -9,9 +9,6 @@ const dotenv = require("dotenv");
 const connect_db = require("./utils/db_connect");
 dotenv.config();
 const app = express();
-app.set("views", __dirname + "/views");
-// set view engine
-app.set("view engine", "ejs");
 
 // set up session cookies
 app.use(
@@ -43,7 +40,7 @@ app.use("/profile", profileRoutes);
 
 // create home route
 app.get("/", (req, res) => {
-  res.render("home");
+  res.send("Hello World!");
 });
 
 const PORT = process.env.PORT || 5000;
