@@ -62,7 +62,7 @@ router.get(
   passport.authenticate("google"),
   async (req, res) => {
     const token = await jwt.sign(
-      { id: req.user.google_id },
+      { id: req.user.social_id },
       process.env.APP_SECRET
     );
     res.redirect("exp://192.168.1.2:19000?token=" + token + "&provider=google");
