@@ -7,7 +7,7 @@ const User = require("../models/User");
 
 dotenv.config();
 router.get("/login", (req, res) => {
-  res.render("login");
+  res.send("You have to loginned");
 });
 
 router.get("/google/user", verifyUser, async (req, res) => {

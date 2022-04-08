@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const authCheck = (req, res, next) => {
   if (!req.user) {
-    res.send("You have to login first");
+    res.redirect("/auth/login");
   } else {
     next();
   }
