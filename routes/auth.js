@@ -16,10 +16,13 @@ router.get("/logout", (req, res) => {
 
 router.get("/google/user", verifyUser, async (req, res) => {
   const { id } = req.user;
+  console.log(req.user);
 
   const user = await User.findOne({ social_id: id });
   if (user) {
     res.status(200).send(user);
+  } else {
+    res.status(400).send("User not found");
   }
 });
 
