@@ -36,7 +36,7 @@ passport.use(
           avatar: profile.photos[0].value,
         })
           .save()
-          .then(() => {
+          .then((new_user) => {
             return cb(null, new_user);
           });
       }
