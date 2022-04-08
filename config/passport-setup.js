@@ -25,7 +25,7 @@ passport.use(
       // but first find a user with google id
       console.log("Google User", profile);
 
-      const user = await User.findOne({ google_id: profile.id });
+      const user = await User.findOne({ social_id: profile.id });
       if (user) {
         console.log(user);
         return cb(null, user);
