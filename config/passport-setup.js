@@ -30,11 +30,15 @@ passport.use(
         console.log(user);
         return cb(null, user);
       } else {
-        const new_user = await new User({
+        new User({
           social_id: profile.id,
           username: profile.displayName,
-        }).save();
-        return cb(null, new_user);
+        })
+          .save()
+          .then(() => {
+            console.log("New User Created");
+            return cb(null, new_user);
+          });
       }
     }
   )
