@@ -2,7 +2,7 @@ const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const User = require("../models/User");
 const TwitterStrategy = require("passport-twitter").Strategy;
-
+const GitHubStrategy = require("passport-github2").Strategy;
 passport.serializeUser((user, done) => {
   done(null, user._id);
 });
@@ -63,6 +63,35 @@ passport.use(
         new User({
           social_id: profile.id,
           username: profile.name,
+        })
+          .save()
+          .then((new_user) => {
+            console.log(new_user);
+            console.log("New User Created");
+            return cb(null, new_user);
+          });
+      }
+    }
+  )
+);
+
+passport.use(
+  new GitHubStrategy(
+    {
+      clientID: "59315ad4e98982081446",
+      clientSecret: "d0cb45eb5ca260cd26eddcd1efb87c15f062de2a",
+      callbackURL: "https://bfa2-103-92-103-132.ngrok.io/auth/github/callback",
+    },
+    async function (accessToken, refreshToken, profile, cb) {
+      console.log(profile);
+      const user = await User.findOne({ social_id: profile.id });
+      if (user) {
+        console.log("UserFound", user);
+        return cb(null, user);
+      } else {
+        new User({
+          social_id: profile.id,
+          username: profile.displayName,
         })
           .save()
           .then((new_user) => {

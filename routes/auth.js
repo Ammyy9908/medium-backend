@@ -4,7 +4,6 @@ const verifyUser = require("../utils/verifyUser");
 const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
-
 dotenv.config();
 router.get("/login", (req, res) => {
   res.send("You have to loginned");
@@ -32,6 +31,15 @@ router.get("/facebook/user", verifyUser, async (req, res) => {
 });
 
 router.get("/twitter/user", verifyUser, async (req, res) => {
+  const { id } = req.user;
+
+  const user = await User.findOne({ social_id: id });
+  if (user) {
+    res.status(200).send(user);
+  }
+});
+
+router.get("/github/user", verifyUser, async (req, res) => {
   const { id } = req.user;
 
   const user = await User.findOne({ social_id: id });
@@ -79,6 +87,24 @@ router.get(
     res.redirect(
       "exp://192.168.1.2:19000?token=" + token + "&provider=twitter"
     );
+  }
+);
+
+router.get(
+  "/github",
+  passport.authenticate("github", { scope: ["user:email"] })
+);
+
+router.get(
+  "/github/callback",
+  passport.authenticate("github", { failureRedirect: "/login" }),
+  async function (req, res) {
+    // Successful authentication, redirect home.
+    const token = await jwt.sign(
+      { id: req.user.social_id },
+      process.env.APP_SECRET
+    );
+    res.redirect("exp://192.168.1.2:19000?token=" + token + "&provider=github");
   }
 );
 
