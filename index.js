@@ -9,7 +9,7 @@ const dotenv = require("dotenv");
 const connect_db = require("./utils/db_connect");
 dotenv.config();
 const app = express();
-
+app.set("views", __dirname + "/views");
 // set view engine
 app.set("view engine", "ejs");
 
