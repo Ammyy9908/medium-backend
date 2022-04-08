@@ -45,7 +45,7 @@ passport.use(
       clientID: "1143568439796260",
       clientSecret: "a689c11edd9838d3fe231cc8b57680f7",
       callbackURL:
-        "https://medium-backend-native.herokuapp.com/auth/facebook/callback",
+        "https://medium-backend-native.herokuapp.com/auth/facebook/callback/",
     },
     async function (accessToken, refreshToken, profile, cb) {
       const user = await User.findOne({ social_id: profile.id });
