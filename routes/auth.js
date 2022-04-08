@@ -10,10 +10,6 @@ router.get("/login", (req, res) => {
   res.render("login");
 });
 
-router.get("/logout", (req, res) => {
-  res.send("Logged out...");
-});
-
 router.get("/google/user", verifyUser, async (req, res) => {
   const { id } = req.user;
   console.log(req.user);
@@ -44,9 +40,9 @@ router.get(
 
 router.get("/facebook", passport.authenticate("facebook"));
 
-router.get("/logout", (req, res) => {
-  req.logout().redirect("/");
-  // res.redirect("exp://192.168.1.2:19000");
+router.get("/logout", (req, res, next) => {
+  req.logOut();
+  req.redirect("/");
 });
 
 router.get(

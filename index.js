@@ -15,12 +15,19 @@ app.use(
   cookieSession({
     maxAge: 24 * 60 * 60 * 1000,
     keys: [keys.session.cookieKey],
+    resave: false,
+    saveUninitialized: true,
   })
 );
 
 // initialize passport
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.get("/logout", (req, res) => {
+  req.logout();
+  res.redirect("exp://192.168.1.2:19000?logout=success");
+});
 
 connect_db()
   .then((connected) => {
