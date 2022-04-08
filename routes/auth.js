@@ -48,6 +48,7 @@ router.get(
   "/facebook/callback",
   passport.authenticate("facebook"),
   async (req, res) => {
+    console.log("Facebook user", req.user);
     const token = await jwt.sign(
       { id: req.user.social_id },
       process.env.APP_SECRET
