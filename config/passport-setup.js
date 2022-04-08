@@ -33,6 +33,7 @@ passport.use(
         new User({
           social_id: profile.id,
           username: profile.displayName,
+          avatar: profile.photos[0].value,
         })
           .save()
           .then(() => {
@@ -60,6 +61,7 @@ passport.use(
         new User({
           social_id: profile.id,
           username: profile.displayName,
+          avatar: profile.photos[0].value,
         })
           .save()
           .then((new_user) => {
@@ -88,6 +90,7 @@ passport.use(
         new User({
           social_id: profile.id,
           username: profile.displayName,
+          avatar: profile.photos[0].value,
         })
           .save()
           .then((new_user) => {
