@@ -1,6 +1,8 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const User = require("../models/User");
+const dotenv = require("dotenv");
+dotenv.config();
 const TwitterStrategy = require("passport-twitter").Strategy;
 const GitHubStrategy = require("passport-github2").Strategy;
 passport.serializeUser((user, done) => {
@@ -14,20 +16,17 @@ passport.deserializeUser((id, done) => {
 passport.use(
   new GoogleStrategy(
     {
-      clientID:
-        "399035459742-k0e95cvo8comelv624s94v01231ja2qo.apps.googleusercontent.com",
-      clientSecret: "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",
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL:
         "https://medium-backend-native.herokuapp.com/auth/google/callback",
     },
     async function (accessToken, refreshToken, profile, cb) {
       // create a new user
       // but first find a user with google id
-      console.log("Google User", profile);
 
       const user = await User.findOne({ social_id: profile.id });
       if (user) {
-        console.log(user);
         return cb(null, user);
       } else {
         new User({
@@ -36,7 +35,6 @@ passport.use(
         })
           .save()
           .then(() => {
-            console.log("New User Created");
             return cb(null, new_user);
           });
       }
@@ -47,17 +45,14 @@ passport.use(
 passport.use(
   new TwitterStrategy(
     {
-      consumerKey: "uw5PdJQFIuxA2lOFo1IBwevYi",
-      consumerSecret: "mQst2qxX3E1cLY2ZlMLBXyhU95Q7hw3PbH6HM3DvefcrPd2xar",
+      consumerKey: process.env.TWITTER_CONSUMER_KEY,
+      consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
       callbackURL:
         "https://medium-backend-native.herokuapp.com/auth/twitter/callback",
     },
     async function (token, tokenSecret, profile, cb) {
-      console.log("Twitter User", profile);
-
       const user = await User.findOne({ social_id: profile.id });
       if (user) {
-        console.log("UserFound", user);
         return cb(null, user);
       } else {
         new User({
@@ -66,8 +61,6 @@ passport.use(
         })
           .save()
           .then((new_user) => {
-            console.log(new_user);
-            console.log("New User Created");
             return cb(null, new_user);
           });
       }
@@ -78,8 +71,8 @@ passport.use(
 passport.use(
   new GitHubStrategy(
     {
-      clientID: "59315ad4e98982081446",
-      clientSecret: "d0cb45eb5ca260cd26eddcd1efb87c15f062de2a",
+      clientID: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
       callbackURL:
         "https://medium-backend-native.herokuapp.com/auth/github/callback",
     },
