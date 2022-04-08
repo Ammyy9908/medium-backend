@@ -54,10 +54,11 @@ router.get(
       { id: req.user.social_id },
       process.env.APP_SECRET
     );
-    res.send(req.user);
-    // res.redirect(
-    //   "exp://192.168.1.2:19000?token=" + token + "&provider=facebook"
-    // );
+    console.log(token);
+
+    res.redirect(
+      "exp://192.168.1.2:19000?token=" + token + "&provider=facebook"
+    );
   }
 );
 router.get(
