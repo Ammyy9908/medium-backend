@@ -21,6 +21,24 @@ router.get("/google/user", verifyUser, async (req, res) => {
   }
 });
 
+router.post("/facebook/login", async (req, res) => {
+  const { username, id } = req.body;
+  const user = await User.findOne({ social_id: id });
+  if (user) {
+    const token = jwt.sign({ id }, process.env.APP_SECRET);
+    res.status(200).send({ token, provider: "facebook" });
+  } else {
+    const newUser = new User({
+      username,
+      social_id: id,
+    });
+    newUser.save().then(() => {
+      const token = jwt.sign({ id }, process.env.APP_SECRET);
+      res.status(200).send({ token, provider: "facebook" });
+    });
+  }
+});
+
 router.get("/facebook/user", verifyUser, async (req, res) => {
   const { id } = req.user;
 

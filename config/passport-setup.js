@@ -62,7 +62,7 @@ passport.use(
       } else {
         new User({
           social_id: profile.id,
-          username: profile.name,
+          username: profile.displayName,
         })
           .save()
           .then((new_user) => {
