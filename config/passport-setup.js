@@ -1,7 +1,7 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const FacebookStrategy = require("passport-facebook").Strategy;
 const User = require("../models/User");
+const TwitterStrategy = require("passport-twitter").Strategy;
 
 passport.serializeUser((user, done) => {
   done(null, user._id);
@@ -45,24 +45,30 @@ passport.use(
 );
 
 passport.use(
-  new FacebookStrategy(
+  new TwitterStrategy(
     {
-      clientID: "1143568439796260",
-      clientSecret: "a689c11edd9838d3fe231cc8b57680f7",
-      callbackURL:
-        "https://medium-backend-native.herokuapp.com/auth/facebook/callback/",
+      consumerKey: "uw5PdJQFIuxA2lOFo1IBwevYi",
+      consumerSecret: "mQst2qxX3E1cLY2ZlMLBXyhU95Q7hw3PbH6HM3DvefcrPd2xar",
+      callbackURL: "https://4e6d-103-92-103-132.ngrok.io/auth/twitter/callback",
     },
-    async function (accessToken, refreshToken, profile, cb) {
+    async function (token, tokenSecret, profile, cb) {
+      console.log("Twitter User", profile);
+
       const user = await User.findOne({ social_id: profile.id });
       if (user) {
-        console.log(user);
+        console.log("UserFound", user);
         return cb(null, user);
       } else {
-        const new_user = await new User({
+        new User({
           social_id: profile.id,
-          username: profile.displayName,
-        }).save();
-        return cb(null, new_user);
+          username: profile.name,
+        })
+          .save()
+          .then((new_user) => {
+            console.log(new_user);
+            console.log("New User Created");
+            return cb(null, new_user);
+          });
       }
     }
   )

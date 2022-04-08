@@ -31,6 +31,15 @@ router.get("/facebook/user", verifyUser, async (req, res) => {
   }
 });
 
+router.get("/twitter/user", verifyUser, async (req, res) => {
+  const { id } = req.user;
+
+  const user = await User.findOne({ social_id: id });
+  if (user) {
+    res.status(200).send(user);
+  }
+});
+
 router.get(
   "/google",
   passport.authenticate("google", {
@@ -38,31 +47,11 @@ router.get(
   })
 );
 
-router.get("/facebook", passport.authenticate("facebook"));
-
 router.get("/logout", (req, res, next) => {
   req.logOut();
   req.redirect("/");
 });
 
-router.get(
-  "/facebook/callback",
-  passport.authenticate("facebook", {
-    failureRedirect: "/auth/login",
-  }),
-  async (req, res) => {
-    console.log("Facebook user", req.user);
-    const token = await jwt.sign(
-      { id: req.user.social_id },
-      process.env.APP_SECRET
-    );
-    console.log(token);
-
-    res.redirect(
-      "exp://192.168.1.2:19000?token=" + token + "&provider=facebook"
-    );
-  }
-);
 router.get(
   "/google/callback",
   passport.authenticate("google"),
@@ -72,6 +61,24 @@ router.get(
       process.env.APP_SECRET
     );
     res.redirect("exp://192.168.1.2:19000?token=" + token + "&provider=google");
+  }
+);
+
+router.get("/twitter", passport.authenticate("twitter"));
+
+router.get(
+  "/twitter/callback",
+  passport.authenticate("twitter"),
+  async function (req, res) {
+    // Successful authentication, redirect home.
+
+    const token = await jwt.sign(
+      { id: req.user.social_id },
+      process.env.APP_SECRET
+    );
+    res.redirect(
+      "exp://192.168.1.2:19000?token=" + token + "&provider=twitter"
+    );
   }
 );
 
