@@ -17,7 +17,8 @@ passport.use(
       clientID:
         "399035459742-k0e95cvo8comelv624s94v01231ja2qo.apps.googleusercontent.com",
       clientSecret: "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",
-      callbackURL: "https://88eb-103-92-103-132.ngrok.io/auth/google/callback",
+      callbackURL:
+        "https://medium-backend-native.herokuapp.com/auth/google/callback",
     },
     async function (accessToken, refreshToken, profile, cb) {
       console.log(profile);
